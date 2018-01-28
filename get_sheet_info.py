@@ -3,72 +3,11 @@
 import json
 
 import re 
-def clean_residue(residue) :
 
+from get_residue_dict import *
+from get_sheet_info_along import *
 
-	clean_residue  = re.findall('^\d+',residue)
-
-	#print clean_residue,residue
-	if len(clean_residue)==0:
-		return int(residue)	
-	else :
-		return int(clean_residue[0])
-
-
-
-def get_residue_dict(path_to_backbone_info,pdb_name) :
-
-
-	backbone_file = open(path_to_backbone_info+pdb_name+"_backbone.txt")
-
-	residue_dict = {}
-
-
-	for line in backbone_file :
-
-		vals = line.rstrip("\n").split("\t")
-		
-		x = vals[5]
-		y = vals[6]
-		z = vals[7]
-		
-		residue = clean_residue(vals[0])
-		#print x,y,z
-		#residue_dict[vals[0]] = [float(vals[5]),float(vals[6]),float(vals[7])]
-		
-		## Checking if a valid float
-		try :
-			x = float(x)
-		except :
-
-			if x.count('-') == 2 or x.count('-')==1 :
-				a = float(x.rsplit('-',1)[0])
-				b = float('-'+x.rsplit('-',1)[1])
-				c = float(y)
-				#print x,y,z
-				#print a,b,c
-				residue_dict[residue] = [a,b,c]
-				continue		
-
-		try :
-			y = float(y)
-		except :
-
-			if y.count('-') == 2 or y.count('-')==1:
-				a = x
-				b = float(y.rsplit('-',1)[0])
- 				c = float('-'+y.rsplit('-',1)[1])
-				residue_dict[residue] = [a,b,c]
-				#print x,y,z
-                                #print a,b,c
-				continue
-
-		residue_dict[residue] = [float(vals[5]),float(vals[6]),float(vals[7])]
-
-		#residue_dict[vals[0]] = [float(vals[5]),float(vals[6]),float(vals[7])]
 	
-	backbone_file.close()
-	return residue_dict	
 
 
 def extract_sheet_info(pdb_name,chain,sheet_dict,chain_break_file):
@@ -91,7 +30,7 @@ def extract_sheet_info(pdb_name,chain,sheet_dict,chain_break_file):
 			
 			if i not in residue_dict :
 
-				#print "Chain break Exception","residue:",i
+				print "Chain break Exception","residue:",i
 				chain_break_file.write(pdb_name+"\t"+chain+"\t"+sheet+"\t"+str(i)+"\n")
 				residue_list = []
 				break
@@ -112,8 +51,8 @@ def recurse_pdbs() :
     path_to_pdb_list = "all_beta_sheets"
     #path_to_pdbs = "/home/twistgroup/pdb/"
 
-    path_to_json_files = "allBeta_data/strand_info/"
-    path_to_output = "allBeta_data/sheet_info/"
+    path_to_json_files = "allBeta_data/strand_wise_info/"
+    path_to_output = "allBeta_data/sheets/along/"
 
     file = open(path_to_pdb_list,"rb+")
 
@@ -143,7 +82,7 @@ def recurse_pdbs() :
         try :
         	sheet_dict = json.load(open(path_to_json_files+pdb_name+"_"+chain+".json","rb+"))
 
-        	pdb_sheet_dict = extract_sheet_info(pdb_name,chain,sheet_dict,chain_break_file)
+        	pdb_sheet_dict = sheet_info_along(pdb_name,chain,sheet_dict,chain_break_file)
 
         except Exception as e :
 
@@ -155,8 +94,8 @@ def recurse_pdbs() :
         num_sheets+= len(pdb_sheet_dict)
         print len(pdb_sheet_dict)
 
-        #with open(path_to_output+pdb_name+"_"+chain+".json","wb+") as f :
-			#json.dump(pdb_sheet_dict,f)
+        with open(path_to_output+pdb_name+"_"+chain+".json","wb+") as f :
+			json.dump(pdb_sheet_dict,f)
         count+=1
 
 
