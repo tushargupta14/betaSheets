@@ -6,8 +6,7 @@ import re
 
 from get_residue_dict import *
 from get_sheet_info_along import *
-
-	
+from get_sheet_info_across import *
 
 
 def extract_sheet_info(pdb_name,chain,sheet_dict,chain_break_file):
@@ -52,18 +51,18 @@ def recurse_pdbs() :
     #path_to_pdbs = "/home/twistgroup/pdb/"
 
     path_to_json_files = "allBeta_data/strand_wise_info/"
-    path_to_output = "allBeta_data/sheets/along/"
+    path_to_output = "allBeta_data/sheets/across/"
 
     file = open(path_to_pdb_list,"rb+")
 
-    chain_break_file = open("allBeta_chain_break_pdbs.txt","wb+")
+    chain_break_file = open("allBeta_chain_break_across_pdbs.txt","wb+")
 
     chain_break_file.write("PDB"+"\t"+"CHAIN"+"\t"+"SHEET"+"\t"+"RESIDUE"+"\n")
 
     error = 0
     count = 0
 
-    error_file = open("allBata_final_sheet_errors.txt","wb+")
+    error_file = open("allBata_final_sheet_errors_across.txt","wb+")
     num_sheets = 0 
     for line in file :
 
@@ -82,7 +81,9 @@ def recurse_pdbs() :
         try :
         	sheet_dict = json.load(open(path_to_json_files+pdb_name+"_"+chain+".json","rb+"))
 
-        	pdb_sheet_dict = sheet_info_along(pdb_name,chain,sheet_dict,chain_break_file)
+        	#pdb_sheet_dict = sheet_info_along(pdb_name,chain,sheet_dict,chain_break_file)
+
+        	pdb_sheet_dict = sheet_info_across(pdb_name,chain,sheet_dict,chain_break_file)
 
         except Exception as e :
 
@@ -97,7 +98,7 @@ def recurse_pdbs() :
         with open(path_to_output+pdb_name+"_"+chain+".json","wb+") as f :
 			json.dump(pdb_sheet_dict,f)
         count+=1
-
+        #break
 
     print error,count
     print "number of sheets extracted :",num_sheets
