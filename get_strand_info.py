@@ -237,7 +237,7 @@ def extract_strand_wise_info(pdb_name,chain):
 def recurse_pdbs_modified() :
 
 
-	path_to_pdb_list = "all_beta_sheets"
+	path_to_pdb_list = "final_pdb_list"
 
 	#path_to_pdbs = "pdb/"
 	path_to_output = "allBeta_data/strand_wise_info/"
@@ -249,7 +249,7 @@ def recurse_pdbs_modified() :
 	count =0
 	for line in file :
 
-		vals = line.split(" ")
+		"""vals = line.split(" ")
 
 		if "IDs" in vals[0] :
 			continue
@@ -261,6 +261,12 @@ def recurse_pdbs_modified() :
 		pdb_name = pdb_name.lower()
 
 		print pdb_name,"-",chain
+		"""
+		vals = line.rstrip("\n")
+		print vals
+		pdb_name = vals[:4]
+		pdb_name = pdb_name.lower()
+		chain =  vals[-1]
 		
 		
 		try :
@@ -282,7 +288,7 @@ def recurse_pdbs_modified() :
 def recurse_pdbs() :
 
 
-	path_to_pdb_list = "all_beta_sheets"
+	path_to_pdb_list = "final_pdb_list"
 
 	#path_to_pdbs = "pdb/"
 	path_to_output = "allBeta_data/strand_info/"
@@ -294,7 +300,7 @@ def recurse_pdbs() :
 	count =0
 	for line in file :
 
-		vals = line.split(" ")
+		"""vals = line.split(" ")
 
 		if "IDs" in vals[0] :
 			continue
@@ -306,7 +312,13 @@ def recurse_pdbs() :
 		pdb_name = pdb_name.lower()
 
 		print pdb_name,"-",chain
-		
+		"""
+
+		vals = line.rstrip("\n")
+		print vals
+		pdb_name = vals[:4]
+		pdb_name = pdb_name.lower()
+		chain =  vals[-1]
 		
 		try :
 			pdb_sheet_dict = extract_strand_info(pdb_name,chain)

@@ -5,7 +5,7 @@ def recurse_pdbs() :
 
 
 
-    path_to_pdb_list = "all_beta_sheets"
+    path_to_pdb_list = "final_pdb_list"
     #path_to_pdbs = "/home/twistgroup/pdb/"
 
     path_to_json_files = "allBeta_data/curvature/along/"
@@ -24,15 +24,12 @@ def recurse_pdbs() :
     num_sheets = 0 
     for line in file :
 
-    	vals = line.split(" ")
-    	if "IDs" in vals[0] :
-    		continue
-        #print vals[0]
-        pdb_name = vals[0][:4]
-
-        chain =  vals[0][-1]
-
+    	vals = line.rstrip("\n")
+        #print vals
+        pdb_name = vals[:4]
         pdb_name = pdb_name.lower()
+        chain =  vals[-1]
+        
         print pdb_name,"-",chain
         try :
         	sheet_dict = json.load(open(path_to_json_files+pdb_name+"_"+chain+".json","rb+"))

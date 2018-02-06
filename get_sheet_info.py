@@ -47,26 +47,26 @@ def extract_sheet_info(pdb_name,chain,sheet_dict,chain_break_file):
 def recurse_pdbs() :
 
 
-    path_to_pdb_list = "all_beta_sheets"
+    path_to_pdb_list = "final_pdb_list"
     #path_to_pdbs = "/home/twistgroup/pdb/"
 
     path_to_json_files = "allBeta_data/strand_wise_info/"
-    path_to_output = "allBeta_data/sheets/across/"
+    path_to_output = "allBeta_data/sheets/along/"
 
     file = open(path_to_pdb_list,"rb+")
 
-    chain_break_file = open("allBeta_chain_break_across_pdbs.txt","wb+")
+    chain_break_file = open("allBeta_chain_break_along_pdbs.txt","wb+")
 
     chain_break_file.write("PDB"+"\t"+"CHAIN"+"\t"+"SHEET"+"\t"+"RESIDUE"+"\n")
 
     error = 0
     count = 0
 
-    error_file = open("allBata_final_sheet_errors_across.txt","wb+")
+    error_file = open("allBata_final_sheet_along_along.txt","wb+")
     num_sheets = 0 
     for line in file :
 
-    	vals = line.split(" ")
+    	"""vals = line.split(" ")
     	if "IDs" in vals[0] :
     		continue
         #print vals[0]
@@ -74,16 +74,20 @@ def recurse_pdbs() :
 
         chain =  vals[0][-1]
 
+        pdb_name = pdb_name.lower()"""
+        vals = line.rstrip("\n")
+        pdb_name = vals[:4]
         pdb_name = pdb_name.lower()
-
+        chain =  vals[-1]
+		
         print pdb_name,"-",chain
         ## retrieving strand data
         try :
         	sheet_dict = json.load(open(path_to_json_files+pdb_name+"_"+chain+".json","rb+"))
 
-        	#pdb_sheet_dict = sheet_info_along(pdb_name,chain,sheet_dict,chain_break_file)
+        	pdb_sheet_dict = sheet_info_along(pdb_name,chain,sheet_dict,chain_break_file)
 
-        	pdb_sheet_dict = sheet_info_across(pdb_name,chain,sheet_dict,chain_break_file)
+        	#pdb_sheet_dict = sheet_info_across(pdb_name,chain,sheet_dict,chain_break_file)
 
         except Exception as e :
 

@@ -8,7 +8,7 @@ import shutil
 def copy_pdbs() :
 
 
-	path_to_pdb_list = "all_beta_sheets"
+	path_to_pdb_list = "final_pdb_list"
 
 	path_to_pdbs = "/home/twistgroup/pdb/"
 
@@ -20,16 +20,16 @@ def copy_pdbs() :
 	error = 0 
 	count = 0 
 	for line in file :
-		vals = line.split(" ")
 
-		if "IDs" in vals[0] :
-			continue
+		vals = line.rstrip("\n")
 
-		print vals[0]
-
-		pdb_name = vals[0][:4]
+		#print vals
+		#pdb_name = vals[0][:4]
+		pdb_name = vals[:4]
 		pdb_name = pdb_name.lower()
-		
+		chain =  vals[-1]
+
+		print pdb_name
 		res =  os.path.isfile(path_to_pdbs+"pdb"+pdb_name+".ent")
 
 		if res :
@@ -46,7 +46,7 @@ def copy_pdbs() :
 def check_files() :
 
 
-	path_to_pdb_list = "all_beta_sheets"
+	path_to_pdb_list = "final_pdb_list"
 	path_to_pdbs = "/home/twistgroup/pdb/"
 	file = open(path_to_pdb_list,"rb+")
 	error =0
@@ -55,18 +55,20 @@ def check_files() :
 
 	for line in file :
 
-		vals = line.split(" ")
+		#vals = line.split(" ")
 
+		vals = line.rstrip("\n")
 		if "IDs" in vals[0] :
 			continue
 
-		print vals[0]
+		print vals
 
-		pdb_name = vals[0][:4]
+		#pdb_name = vals[0][:4]
+		pdb_name = vals[:4]
 		pdb_name = pdb_name.lower()
-		chain =  vals[0][-1]
+		chain =  vals[-1]
 
-		#print pdb_name,"-",chain
+		print pdb_name,"-",chain
 
 		res =  os.path.isfile(path_to_pdbs+"pdb"+pdb_name+".ent")
 		if res :

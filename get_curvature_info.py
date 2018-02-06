@@ -43,7 +43,7 @@ def curvature_values_across(pdb_name,chain,sheet_dict,residue_dict):
 def recurse_pdbs() :
 
 
-	path_to_pdb_list = "all_beta_sheets"
+	path_to_pdb_list = "final_pdb_list"
 	path_to_backbone_info = "allBeta_data/backbone_info/"
 	#path_to_pdbs = "/home/twistgroup/pdb/"
 
@@ -60,17 +60,12 @@ def recurse_pdbs() :
 	error_file = open("allBeta_curvature_error.txt","wb+")
 	for line in file :
 
-		vals = line.split(" ")
-
-		if "IDs" in vals[0] :
-			continue
-
-		#print vals[0]
-
-		pdb_name = vals[0][:4]
-		chain =  vals[0][-1]
+		vals = line.rstrip("\n")
+		#print vals
+		pdb_name = vals[:4]
 		pdb_name = pdb_name.lower()
-
+		chain =  vals[-1]
+		
 		print pdb_name,"-",chain	
 		
 		
