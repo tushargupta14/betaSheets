@@ -1,5 +1,5 @@
 ## Exdtracts the curvature values for each direction
-## Random information
+
 from calculate_curvature import *
 from get_residue_dict import *
 from collections import defaultdict
