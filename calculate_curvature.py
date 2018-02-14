@@ -31,8 +31,8 @@ def compute_curvature(residue_dict,residue_list,npoints) :
 	s = (a+b+c)/2
 
 	R = a*b*c / 4 / np.sqrt(s*(s-a)*(s-b)*(s-c))
-
-	return (1/R)*180/math.pi
+	
+	return (1/R)
 
 def calculate_data_points(residue_list,residue_dict,npoints,slide_value) :
 

@@ -35,18 +35,18 @@ def handle_along_values(along_dict,along_3,along_5):
 
 	for sheet in along_dict.iterkeys() :
 
-		curv_3 = along_dict[sheet][0]
-		curv_5 = along_dict[sheet][1]
+		A_3 = along_dict[sheet][0]
+		A_5 = along_dict[sheet][1]
 
 		#print curv_3
 		#print curv_5
 		
-		for point in curv_3 :
+		for point in A_3 :
 			if point >= 0 and type(point) == float: 
 				along_3.write(str(point)+"\n")
 
 		
-		for point in curv_5 :
+		for point in A_5 :
 			if point >=0 and type(point) == float:
 				along_5.write(str(point)+"\n")
 
@@ -61,12 +61,12 @@ def recurse_pdbs():
 	file = open(path_to_pdb_list,"rb+")
 	error = 0
 	count = 0
-	across_first = open("across_first.txt","wb+")
+	across_first = open("across_angle_first.txt","wb+")
 
-	across_last = open("across_last.txt","wb+")
-	along_3 = open("along_3.txt","wb+")
+	across_last = open("across_angle_last.txt","wb+")
+	along_3 = open("along_angle_3.txt","wb+")
 
-	along_5 = open("along_5.txt","wb+")
+	along_5 = open("along_angle_5.txt","wb+")
 
 	for line in file :
 
@@ -80,9 +80,9 @@ def recurse_pdbs():
 
 		try :
 
-			across_dict = open_json_file(pdb_name,chain,"curvature/across/")
+			across_dict = open_json_file(pdb_name,chain,"angle/across/")
 
-			along_dict = open_json_file(pdb_name,chain,"curvature/along/")
+			along_dict = open_json_file(pdb_name,chain,"angle/along/")
 
 			handle_across_values(across_dict,across_first,across_last)
 
